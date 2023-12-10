@@ -1,0 +1,6 @@
+
+"${actions[@]}"
+
+[[:space:]]
+
+${#string} --> to get the length of string
