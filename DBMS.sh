@@ -23,28 +23,26 @@ select action in "${actions[@]}";
 			
 			########################### length 1->64 characters ######################
 			
-		        if [ ${#DB_Name} -le 1 -o ${#DB_Name} -ge 10 ]; then 
-                		echo "Error: Database name length should be from 1 to 64 characters."
-            		fi    		
-			: '
-			########################### start with number ###########################
-
-			if [ $"DB_Name"~^[0-9] ];
+		        if [ ${#DB_Name} -le 1 -o ${#DB_Name} -ge 10 ]
+		        then 
+                		echo ">>>>>>>>> Error: Database name length should be from 1 to 64 characters."
+            		fi    					
+			########################### check for space ######################
+			if [[ $DB_Name =~ [[:space:]] ]]
 			then 
-				echo "Error: Database name cannot start with a number."
+				echo ">>>>>>>>> Warning: Database name cannot contain spase, the spase will be replaced with uderscore(_)"
+				echo ">>>>>>>>> $DB_Name will be ${DB_Name// /_}"
+				DB_Name=${DB_Name// /_}									
 			fi
-			'
-			
-			
-			########################### No sepecial charachters , not start with number , not start with _ ###########################
-			if ! [[ $DB_Name =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]];
+			########################### check for sepecial charachters , not start with number , not start with _ ###########################
+			if ! [[ $DB_Name =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]
 			then 
-				echo "Error: Database name can contain letters, uderscore and numbers only. But not start with number or uderscore"
+				echo ">>>>>>>>> Error: Database name can contain letters, uderscore and numbers only. But not start with number or uderscore"
 			fi
 			#############################################################
-			if [ -d "$currentPath/BD/$DB_Name" ];
+			if [ -d "$currentPath/BD/$DB_Name" ]
 			then
-				echo "Error: This Database already exists"
+				echo ">>>>>>>>> Error: This Database already exists"
 			else
 				mkdir "$currentPath/BD/$DB_Name"
 				echo "$DB_Name database is created"   
@@ -69,3 +67,13 @@ select action in "${actions[@]}";
 			;;
 		esac				
 	done 
+	
+: '
+########################### start with number ###########################
+
+if [ $"DB_Name"~^[0-9] ];
+then 
+	echo "Error: Database name cannot start with a number."
+fi
+'	
+	
