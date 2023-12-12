@@ -92,7 +92,7 @@ else
         while [ "$flag" != true ]
         do
             read -p "Please enter column name for column $i: " columnName
-            if [[ ! "$columnName" =~ ^[a-zA-Z0-9_] || ${#columnName} -gt 64]]
+            if [[ ! "$columnName" =~ ^[a-zA-Z0-9_] || ${#columnName} -gt 64 ]]
              then
                 echo "Sorry... invalid column name. Try another name starting with a letter, number, or underscore."
             elif grep -q -w "$columnName" "${metaDataTableName}.metadata"
