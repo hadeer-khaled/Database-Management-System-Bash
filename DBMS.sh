@@ -60,20 +60,36 @@ select action in "${actions[@]}";
 			echo "The availabl databases are: "
 			ls  "$currentPath/BD" 
 			;;
+			
 			# connect database	
 		    3 | [Cc][Oo][Nn][Nn][Ee][Cc][Tt][[:space:]][Tt][Oo][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 		    
 		        read -p "Enter database name: " DB_Name
-			if [ -d "$currentPath/BD/$DB_Name" ]
-			then
-				 ## cd to  $currentPath/DB/$DB_Name
-				 ## let prompt at the new path
-			else
-				echo "This Database don't exist"  
+		        
+		        if (( flag == 1 ))
+		        then
+				if [ -d "$currentPath/BD/$DB_Name" ]
+				then
+					 ## cd to  $currentPath/DB/$DB_Name
+					 ## let prompt at the new path
+					 echo "connect database"
+				else
+					echo "This Database doesn't exist"  
+				fi
 			fi	
 			;;
 		    4 | [Dd][Rr][Oo][Pp][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
-			echo "Drop Database"
+			read -p "Enter database name: " DB_Name
+		        if (( flag == 1 ))
+		        then
+				if [ -d "$currentPath/BD/$DB_Name" ]
+				then
+					
+					 echo "drop database"
+				else
+					echo "This Database doesn't exist"  
+				fi
+		        fi 
 			;;
 		    5 | [Ee][Xx][Ii][Tt] )
 			break

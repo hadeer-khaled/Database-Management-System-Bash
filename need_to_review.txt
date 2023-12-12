@@ -12,8 +12,13 @@
 	- use export with the variable to be seen by child process
 	- use "source" keyword when call child script to run in the same shell.
 
-6) return and print on the screen ===> use  "return" in parent.
+6) return and print on the screen  has been solved ===> use  "return" in parent.
 
 7) how to run the child file in the parent with the relative path.
+   - use enviroment variables 
+   
+8) [ ], [[]] , () . (())
+
+9) ` `, $()  , ' ', " " , { } 
 
 
