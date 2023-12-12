@@ -63,7 +63,7 @@ select action in "${actions[@]}";
 				then
 					 cd "./$DB_Name"
 					 echo "Your path now is: `pwd` " 
-
+		  			 source tableMenue.sh
 				else
 					echo "This Database doesn't exist"  
 				fi

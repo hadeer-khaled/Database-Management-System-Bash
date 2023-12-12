@@ -2,7 +2,7 @@
 
 metadataTables=$(ls *.metadata)
 dataTables=$(ls *.data)
-
+currentPath=`pwd`
 while true
 do
     echo "=== HN List Menu ==="
@@ -43,15 +43,20 @@ do
                 fi
                 ;;
             "Show content of specific table")
-                echo "You selected: $answer"
-                read -p "If you want to see metadata table with data table, please enter the table name to show: " tableName
-		if ! echo "$MDtables $Dtables" | grep -wq "$tableName"
-                then
-                    echo "Sorry something missing data table or meta data table so can't show them together"
-                else
-                    cat "$tableName.metadata" "$tableName.data"
-                fi
-                ;;
+   		 echo "You selected: $answer"
+  		  read -p "If you want to see metadata table with data table, please enter the table name to show: " tableName
+		 if [[ -f "$currentPath/$tableName.data" && -f "$currentPath/$tableName.metadata" ]]
+   		 #! echo "$MDtables" | grep -qw "$tableName"
+  		  then
+  			      cat "$tableName.metadata" "$tableName.data"
+  		elif [[ -f "$currentPath/$tableName.metadata" && ! -f "$currentPath/$tableName.data" ]]
+  		then
+  		echo "this table is empty .. no content just metadata"
+  		cat "$tableName.metadata"
+   		 else
+     			   echo "Sorry, table not exist"
+   		 fi
+  		  ;;
             "Exit")
                 echo "Exiting program!"
                 exit;;
@@ -61,4 +66,6 @@ do
         break
     done
 done
+
+
 
