@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
 currecntDirectory=$(pwd) 
-while true; do
+while true
+do
     echo "=== HN Table Menu ==="
     tableMenu=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Update Table" "Delete From Table" "Exit") 
 
@@ -10,7 +11,7 @@ while true; do
         case $answer in
          "Create Table")
          		 echo "You selected: $answer"
-         		#$currecntDirectory/createTable.sh;;
+         		$currecntDirectory/createTable.sh;;
             "List Tables") 
             		echo "You selected: $answer";;
             		#~$currecntDirectory/listTable.sh
@@ -27,7 +28,8 @@ while true; do
             		echo "You selected: $answer";;
             "Exit") 
             		echo "Exiting program!"; exit;;
-            *) echo "Invalid choice. Please enter a valid option.";;
+            *) 
+            echo "Invalid choice. Please enter a valid option.";;
         esac
         break
     done
