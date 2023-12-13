@@ -2,6 +2,7 @@
 
 
 metadataTables=$( ls *.metadata )
+metadataTables=$( ls *.data )
 read -p "Please enter the table name you want to drop: " tableName
 if [ ! -e "${tableName}.metadata" ]
    	then
@@ -10,8 +11,8 @@ else
     read -p "Do you really want to drop the table '$tableName'? (yes/no): " confirmation
     if [ "$confirmation" == "yes" ]
      then
-        rm "$tableName.data"
-        echo "Data file '$tableName.data' removed successfully."
+        rm "$tableName.data" "$tableName.metadata"
+        echo "Data file '$tableName.data' and '$tableName.metadata' removed successfully."
     else
         echo "Table '$tableName' not dropped."
     fi
