@@ -6,19 +6,11 @@ echo "__________________________________________________________________________
 flag=false
 while [ "$flag" != true ]
 do
-<<<<<<< HEAD
-    read -p "Please enter a table name to create: " metaDataTableName
-    if [ -e "${metaDataTableName}.metadata" ]
-    then
-        echo "Sorry... table with name '$metaDataTableName' already exists. Try another name."
-    elif [[ ! "$metaDataTableName" =~ ^[a-zA-Z0-9_] || ${#metaDataTableName} -gt 64 ]]
-
     read -p "Please enter a table name to create: " tableName
     if [ -e "${tableName}.metadata" ]
     then
         echo "Sorry... table with name '$tableName' already exists. Try another name."
     elif [[ ! "$tableName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#tableName} -gt 64 ]]
-
      then
         echo "Sorry... invalid name. Try another name starting with a letter, number, or underscore and less than 64 character ONLY"
     else
@@ -26,17 +18,11 @@ do
     fi
 done
 
-if echo "$metaDataTableName" | grep -q ' '
- then
-    tableNameReplacedSpace=$(echo "$metaDataTableName" | sed 's/ /_/g')
-    touch "${tableNameReplacedSpace}.metadata"
-=======
 if echo "$tableName" | grep -q ' '
  then
     tableNameReplacedSpace=$(echo "$tableName" | sed 's/ /_/g')
     touch "${tableNameReplacedSpace}.metadata"
         touch "${tableNameReplacedSpace}.data"
->>>>>>> main
     echo "Table with name '$tableNameReplacedSpace' created successfully"
     read -p "Please enter the number of columns you want to enter: " columnNumber
     columnNames=""
@@ -48,11 +34,7 @@ if echo "$tableName" | grep -q ' '
         while [ "$flag" != true ]
         do
             read -p "Please enter column name for column $i: " columnName
-<<<<<<< HEAD
-            if [[ ! "$columnName" =~ ^[a-zA-Z0-9_] || ${#columnName} -gt 64 ]]
-=======
             if [[ ! "$columnName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#columnName} -gt 64 ]]
->>>>>>> main
             then
                 echo "Sorry... invalid column name. Try another name starting with a letter, number, or underscore."
             elif grep -q -w "$columnName" "${tableNameReplacedSpace}.metadata"
@@ -99,14 +81,9 @@ if echo "$tableName" | grep -q ' '
     echo "$primaryKeys" >> "${tableNameReplacedSpace}.metadata"
 
 else
-<<<<<<< HEAD
-    touch "${metaDataTableName}.metadata"
-    echo "Table with name '$metaDataTableName' created successfully"
-=======
     touch "${tableName}.metadata"
     touch "${tableName}.data"
     echo "Table with name '$tableName' created successfully"
->>>>>>> main
     read -p "Please enter the number of columns you want: " columnNumber
     columnNames=""
     dataTypes=""
@@ -117,11 +94,7 @@ else
         while [ "$flag" != true ]
         do
             read -p "Please enter column name for column $i: " columnName
-<<<<<<< HEAD
-            if [[ ! "$columnName" =~ ^[a-zA-Z0-9_] || ${#columnName} -gt 64 ]]
-=======
             if [[ ! "$columnName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#columnName} -gt 64 ]]
->>>>>>> main
              then
                 echo "Sorry... invalid column name. Try another name starting with a letter, number, or underscore."
             elif grep -q -w "$columnName" "${metaDataTableName}.metadata"
@@ -161,19 +134,11 @@ else
         done
     done
 
-<<<<<<< HEAD
-    echo -n "$columnNames" >> "${metaDataTableName}.metadata"
-    echo >> "${metaDataTableName}.metadata"
-    echo -n "$dataTypes" >> "${metaDataTableName}.metadata"
-    echo >> "${metaDataTableName}.metadata"
-    echo "$primaryKeys" >> "${metaDataTableName}.metadata"
-=======
     echo -n "$columnNames" >> "${tableName}.metadata"
     echo >> "${tableName}.metadata"
     echo -n "$dataTypes" >> "${tableName}.metadata"
     echo >> "${tableName}.metadata"
     echo "$primaryKeys" >> "${tableName}.metadata"
->>>>>>> main
 fi
 
 

@@ -1,16 +1,14 @@
 1) Select Menu Validations
-	- Enter number of selection or string (made it not casesensotive). (DN)
-	- IF the input not in the list --> Invlaid input  (DN)
+	- Enter number of selection or string (made it not casesensotive).
+	- IF the input not in the list --> Invlaid input
 	
 2) Create Database Name Validations
 	- if exist --> Error
 	- if not exist: create it and check for
-		- length  (DN)
-		- No spaces (replace space with _ )  (DN)
-		- start with numbers , No special caharacters (DN)
+		- length 
+		- No spaces (replace space with _ ) 
+		- start with numbers , No special caharacters
 		- Reserved Keywords:
 	
-3) list all database --> if empty --> there is no databases
-
-
+- 
 
