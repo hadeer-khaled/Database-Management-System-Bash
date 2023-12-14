@@ -3,12 +3,12 @@ shopt -s extglob
 currentPath=`pwd`
 
 # check if DB dir exit or not.
-if [ ! -d "$currentPath/BD" ];
+if [ ! -d "$currentPath/DB" ];
 then 
-    mkdir "$currentPath/BD"
+    mkdir "$currentPath/DB"
 fi
 
-cd $currentPath/BD
+cd $currentPath/DB
 #echo "Your path now is: `pwd`"
 
 #-----------------------------------------
@@ -35,11 +35,11 @@ select action in "${actions[@]}";
 
 			if (( flag == 1 ))
 			then 
-				if [ -d "$currentPath/BD/$DB_Name" ]
+				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
 					echo ">>>>>>>>> Error: This Database already exists"
 				else
-					mkdir "$currentPath/BD/$DB_Name"
+					mkdir "$currentPath/DB/$DB_Name"
 					echo "$DB_Name database is created"   
 				fi
 			fi
@@ -49,7 +49,7 @@ select action in "${actions[@]}";
 			################################# List available databases ################################	
 		    2 | [Ll][Ii][Ss][Tt][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 			echo "The available databases are: "
-			ls  "$currentPath/BD" 
+			ls  "$currentPath/DB" 
 			;;
 			
 			################################# Connect to a databases ################################	
@@ -59,7 +59,7 @@ select action in "${actions[@]}";
 		        source name_checker.sh
 		        if (( flag == 1 ))
 		        then
-				if [ -d "$currentPath/BD/$DB_Name" ]
+				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
 					 cd "./$DB_Name"
 					 echo "Your path now is: `pwd` " 
@@ -76,10 +76,10 @@ select action in "${actions[@]}";
 			source name_checker.sh
 		        if (( flag == 1 ))
 		        then
-				if [ -d "$currentPath/BD/$DB_Name" ]
+				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
 					
-					rm -r "$currentPath/BD/$DB_Name" 
+					rm -r "$currentPath/DB/$DB_Name" 
 					echo "$DB_Name is deleted successfully."
 				else
 					echo "This Database doesn't exist"  
@@ -96,11 +96,5 @@ select action in "${actions[@]}";
 		esac				
 	done 	
 : '
-########################### start with number ###########################
-
-if [ $"DB_Name"~^[0-9] ];
-then 
-	echo "Error: Database name cannot start with a number."
-fi
-'	
+	
 	
