@@ -3,7 +3,7 @@ shopt -s extglob
 
 
 			#-------------------------- Check the name length--------------------------#
-			if [ ${#DB_Name} -le 1 -o ${#DB_Name} -ge 10 ]
+			if [ ${#DB_Name} -le 1 -o ${#DB_Name} -ge 64 ]
 			then 
 				echo ">>>>>>>>> Error: Database name length should be from 1 to 64 characters."
 				flag=0
@@ -14,7 +14,8 @@ shopt -s extglob
 			then 
 				echo ">>>>>>>>> Warning: Database name cannot contain spaces, the spaces will be replaced with uderscore(_)"
 				echo ">>>>>>>>> The database name will be \"${DB_Name// /_}\" instead of \"$DB_Name\" "
-				DB_Name=${DB_Name// /_}									
+				DB_Name=${DB_Name// /_}
+				flag=1									
 			fi
 			
 			#-------------------------- Check for sepecial charachters OR if start with number OR if start with (_) --------------------------#

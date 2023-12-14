@@ -11,13 +11,21 @@ do
         case $answer in
          "Create Table")
          		 echo "You selected: $answer"
+
          		$currecntDirectory/createTable.sh;;
             "List Tables") 
             		echo "You selected: $answer";;
             		#~$currecntDirectory/listTable.sh
             "Drop Table") 
-            		echo "You selected: $answer";;
+            		echo "You selected: $answer"
             		#$currecntDirectory/dropTable.sh
+         		createTable.sh;;
+            "List Tables") 
+            		echo "You selected: $answer"
+            		listTables.sh;;
+            "Drop Table") 
+            		echo "You selected: $answer"
+            		dropTable.sh;;
             "Insert into Table") 
             		echo "You selected: $answer";;
             "Select From Table")
