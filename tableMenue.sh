@@ -23,7 +23,8 @@ do
             "Select From Table")
             		 echo "You selected: $answer";;
             "Update Table") 
-            		echo "You selected: $answer";;
+            		echo "You selected: $answer"
+            		updateTable.sh;;
             "Delete From Table") 
             		echo "You selected: $answer";;
             "Exit") 
