@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-insertMenu=("Insert new Column" "Insert new row" "Exit")
+insertMenu=("Insert new Field" "Insert new row" "Exit")
 
 while true
 do
@@ -8,7 +8,7 @@ do
     select answer in "${insertMenu[@]}"
     do
         case $answer in
-            "Insert new Column")
+            "Insert new Field")
                 echo "You selected: $answer"
                 read -p "Please enter table name : " tableName
                 if [ -f "${tableName}.metadata" ]
@@ -37,11 +37,11 @@ do
 			newMetaData="${tableName}.new.metadata"
                     awk -F: -v fieldName="$fieldName" -v dataType="$dataType" -v isPrimary="$isPrimary" '{
                         if (NR == 1) {
-                            print $0, fieldName ":"
+                            print $0, fieldName":"
                         } else if (NR==2){
-                            print $0 dataType ":"
+                            print $0 dataType":"
                         }else {
-                        print $0 isPrimary ":"
+                        print $0 isPrimary":"
                         }
                     }' "$oldMetadata" > "$newMetaData"
                     
@@ -53,7 +53,37 @@ do
                 ;;
             "Insert new row")
                 echo "You selected: $answer"
-                ;;
+                 read -p "Please enter table name to insert a new row: " tableName
+                if [ -f "${tableName}.metadata" ]
+                then
+		fieldNames=($(awk -F: 'NR==1 {for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+		fieldDataTypes=($(awk -F: 'NR==2{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+		fieldIsPrimary=($(awk -F: 'NR==3{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+		for ((i=0; i<${#fieldNames[@]}; i++))
+		do
+  		      fieldName="${fieldNames[i]}"
+    		      fieldDataType="${fieldDataTypes[i]}"
+   		      fieldsPrimary="${fieldIsPrimary[i]}"
+   		 while true
+   		  do
+        		read -p "Enter value for $fieldName: " fieldValue
+      				  if [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
+      				  then
+         				   echo "Invalid input. '$fieldName' should be a string."
+  			        elif [[ "$fieldDataType" == "number" && ! "$fieldValue" =~ ^[0-9]+$ ]]
+  			        then
+        				    echo "Invalid input. '$fieldName' should be a number."
+  			      else
+  				          break  
+    			    fi
+    		  done
+   		 echo -n "$fieldValue:" >> "${tableName}.data"
+		done
+		echo >> "${tableName}.data"
+		else 
+                    echo "Table '$tableName' does not exist"
+              fi      
+		;;
             "Exit")
                 echo "Exiting program!"
                 exit;;
@@ -65,6 +95,4 @@ do
     done
 done
 
-
-               
 
