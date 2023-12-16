@@ -1,5 +1,7 @@
 #!/bin/bash
 shopt -s extglob
+export LC_COLLATE=C
+
 currentPath=`pwd`
 
 # check if DB dir exit or not.

@@ -18,11 +18,17 @@
 	
 	check if the tableName,desiredColumnName,whereColumnName are exists (DN)
 	
+	check if  tableName,desiredColumnName,whereColumnName have space --> replace with _
+	
 	check if name pk  ----> if value already exist --> error name already exists and cannot be repeated (DN)
+	
+	
 		
 	
 	
-5) delete from table
+5) delete from table (DN)
+
+
 6) Merge update file to DBMS.
 7) Merge delet file to DBMS.
 8) Merge with nouran
