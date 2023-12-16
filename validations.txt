@@ -12,3 +12,17 @@
 	
 3) if there is no databases --> echo there is no databases
 
+4) at updateTable
+	set name = hadeer
+	where id = 10
+	
+	check if name pk  ----> if value already exist --> error name already exists and cannot be repeated
+	checl value datatype(string or number)
+	check if the table , columns are exists
+	
+	
+5) delete from table
+6) Merge update file to DBMS.
+7) Merge delet file to DBMS.
+8) Merge with nouran
+
