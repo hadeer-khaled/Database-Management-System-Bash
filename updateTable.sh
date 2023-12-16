@@ -69,13 +69,15 @@ isRepeated=1
        		read -p "Enter the New $desiredColumnName value: " newValue 
        done	
        #--------------- check if the newValue already exist ---------------#
-	exist=$(awk -F: -v input="$newValue" '$2 == input {print 1}' "$dataFile")
+	#exist=$(awk -F: -v input="$newValue" '$2 == input {print 1}' "$dataFile")
+	exist=$(awk -F: -v input="$newValue" -v desiredColumnNumber=$desiredColumnNumber '$desiredColumnNumber == input {print 1}' "$dataFile")
 
 	while  [ -n "$exist" ];
 	do
 	    echo ">> This column is primary key. so the values cannot be repeated."
 	    read -p "Enter the New $desiredColumnName value: " newValue
-	    exist=$(awk -F: -v input="$newValue" '$desiredColumnName == input {print 1}' "$dataFile")
+	    #exist=$(awk -F: -v input="$newValue" '$2 == input {print 1}' "$dataFile")
+	exist=$(awk -F: -v input="$newValue" -v desiredColumnNumber=$desiredColumnNumber '$desiredColumnNumber == input {print 1}' "$dataFile")
 	done
 
 	echo "You entered a unique value: $newValue"
