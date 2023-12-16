@@ -35,7 +35,7 @@ do
  	   if [[ -f "$currentPath/$tableName.data" && -f "$currentPath/$tableName.metadata" ]]
  	   then
    	     read -p "Please enter the name of the field you want to select from $tableName: " fieldName
-   	     fieldNumber=$(echo "$metadata" | awk -F: -v col="$fieldName" '{for (i=1; i<=NF; i++) if ($i == col) print i}' "$tableName.metadata")
+   	     fieldNumber=$(echo "$currentPath/$tableName.metadata" | awk -F: -v col="$fieldName" '{for (i=1; i<=NF; i++) if ($i == col) print i}' "$tableName.metadata")
   		      if [[ ${#fieldNumber} -gt 0 ]]
    		     then
        			    awk -F: -v fieldNum="$fieldNumber" '{if (NF >= fieldNum) print $fieldNum}' "$currentPath/$tableName.data"
