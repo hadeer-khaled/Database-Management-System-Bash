@@ -16,9 +16,10 @@
 	set name = hadeer
 	where id = 10
 	
-	check if name pk  ----> if value already exist --> error name already exists and cannot be repeated
-	checl value datatype(string or number)
-	check if the table , columns are exists
+	check if the tableName,desiredColumnName,whereColumnName are exists (DN)
+	
+	check if name pk  ----> if value already exist --> error name already exists and cannot be repeated (DN)
+		
 	
 	
 5) delete from table
