@@ -67,14 +67,19 @@ select action in "${deleteActions[@]}";
 				CondColumnNumber=$(echo "$header" | awk -F: -v whereColumnName="$whereColumnName" '{for(i=1; i<=NF; i++) if($i == whereColumnName) print i}')
 
 			done
-			read -p "Enter the Condition Value: " whereValue 
-			if grep -q "$whereValue" "$dataFile"; then
 			
-			delTempFile=$(mktemp)
-			awk -v id="$whereValue" -F: '$1 != id' "$dataFile" > "$delTempFile"
-			mv "$delTempFile" "$dataFile"
-			rm -f "$delTempFile"
-			echo "Row with $whereColumnName = $whereValue is deleted successfully. "
+			read -p "Enter the Condition Value: " whereValue 
+			
+			if grep -q "$whereValue" "$dataFile"; then
+				
+				delTempFile=$(mktemp)
+				
+				awk -v whereValue="$whereValue" -v CondColumnNumber="$CondColumnNumber"  -F: '$CondColumnNumber != whereValue' "$dataFile" > "$delTempFile"
+				
+				mv "$delTempFile" "$dataFile"
+				
+				rm -f "$delTempFile"
+				echo "Row with $whereColumnName = $whereValue is deleted successfully. "
 			fi
 
 			;;	

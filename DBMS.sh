@@ -33,7 +33,7 @@ select action in "${actions[@]}";
 			read -p "Enter database name: " DB_Name
 			
 			
-			source name_checker.sh
+			source databaseNameChecker.sh
 
 			if (( flag == 1 ))
 			then 
@@ -58,7 +58,7 @@ select action in "${actions[@]}";
 		    3 | [Cc][Oo][Nn][Nn][Ee][Cc][Tt][[:space:]][Tt][Oo][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 		    
 		        read -p "Enter database name: " DB_Name
-		        source name_checker.sh
+		        source databaseNameChecker.sh
 		        if (( flag == 1 ))
 		        then
 				if [ -d "$currentPath/DB/$DB_Name" ]
@@ -75,7 +75,7 @@ select action in "${actions[@]}";
 			################################# Drop a databases ################################	
 		    4 | [Dd][Rr][Oo][Pp][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 			read -p "Enter database name: " DB_Name
-			source name_checker.sh
+			source databaseNameChecker.sh
 		        if (( flag == 1 ))
 		        then
 				if [ -d "$currentPath/DB/$DB_Name" ]
