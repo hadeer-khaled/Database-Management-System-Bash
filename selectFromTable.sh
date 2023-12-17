@@ -16,7 +16,10 @@ do
             "Select whole table")
                 echo "You selected: $answer"
                 read -p "Please enter the name of the table you want to select: " tableName
-                if [[ -f "$currentPath/$tableName.data" && -f "$currentPath/$tableName.metadata" ]]
+                 if [[  -z "$tableName" ]]
+       			then
+       			 echo "Please enter a value for the table you want"
+                elif [[ -f "$currentPath/$tableName.data" && -f "$currentPath/$tableName.metadata" ]]
                 then
                     cat "$tableName.metadata" "$tableName.data"
                 elif [[ -f "$currentPath/$tableName.metadata" && ! -f "$currentPath/$tableName.data" ]]
@@ -36,9 +39,12 @@ do
  	   then
    	     read -p "Please enter the name of the field you want to select from $tableName: " fieldName
    	     fieldNumber=$(echo "$currentPath/$tableName.metadata" | awk -F: -v col="$fieldName" '{for (i=1; i<=NF; i++) if ($i == col) print i}' "$tableName.metadata")
-  		      if [[ ${#fieldNumber} -gt 0 ]]
+   	   		 if [[  -z "$fieldName" ]]
+       			then
+       			 echo "Please enter a value for the field you want"
+  		      elif [[ ${#fieldNumber} -gt 0 ]]
    		     then
-       			    awk -F: -v fieldNum="$fieldNumber" '{if (NF >= fieldNum) print $fieldNum}' "$currentPath/$tableName.data"
+       			    awk -F: -v fieldNum="$fieldNumber" '{if (NF >= fieldNum) print $fieldNum}' "$currentPath/$tableName.data"	
      		   else
            		 echo "Field '$fieldName' not found in the metadata of '$tableName'."
         		fi
