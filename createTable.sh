@@ -25,12 +25,26 @@ done
 #_________________________________________________________________________________________________________________________________
 #here we validate the name if it have spaces replace it with underscore using sed
 if echo "$tableName" | grep -q ' ' 
- then
+then
     tableNameReplacedSpace=$(echo "$tableName" | sed 's/ /_/g')
     touch "${tableNameReplacedSpace}.metadata"
     touch "${tableNameReplacedSpace}.data"
     echo "Table with name '$tableNameReplacedSpace' created successfully"
-    read -p "Please enter the number of fields you want to enter: " fieldNumber
+
+    # Validate and get a valid fieldNumber
+    validFieldNumber=false
+    while [ "$validFieldNumber" != true ]
+    do
+        read -p "Please enter the number of fields you want to enter: " fieldNumber
+        # Check if fieldNumber is a valid number
+        if [[ "$fieldNumber" =~ ^[0-9]+$ ]]
+        then
+            validFieldNumber=true
+        else
+            echo "Invalid input. Please enter a valid number for the field number."
+        fi
+    done
+
     fieldNames=""
     dataTypes=""
     primaryKeys=""
@@ -85,13 +99,27 @@ if echo "$tableName" | grep -q ' '
     echo -n "$dataTypes" >> "${tableNameReplacedSpace}.metadata"
     echo >> "${tableNameReplacedSpace}.metadata"
     echo "$primaryKeys" >> "${tableNameReplacedSpace}.metadata"
+
+
+
 #___________________________________________________________________________________________________________________________________
 #if user enter table name without any problems
 else
     touch "${tableName}.metadata"
     touch "${tableName}.data"
     echo "Table with name '$tableName' created successfully"
-    read -p "Please enter the number of field you want: " fieldNumber
+    validFieldNumber=false
+    while [ "$validFieldNumber" != true ]
+    do
+        read -p "Please enter the number of fields you want to enter: " fieldNumber
+        # Check if fieldNumber is a valid number
+        if [[ "$fieldNumber" =~ ^[0-9]+$ ]]
+        then
+            validFieldNumber=true
+        else
+            echo "Invalid input. Please enter a valid number for the field number."
+        fi
+    done
     fieldNames=""
     dataTypes=""
     primaryKeys=""
