@@ -57,7 +57,6 @@ do
 #____________________________________________________________________________________________________________________
 #menu for choosing insert  new row (data)
 
-		#menu for choosing insert  new column
 "Insert new row")
     echo "You selected: $answer"
     read -p "Please enter table name to insert a new row: " tableName
@@ -66,7 +65,6 @@ do
         fieldNames=($(awk -F: 'NR==1 {for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
         fieldDataTypes=($(awk -F: 'NR==2{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
         fieldIsPrimary=($(awk -F: 'NR==3{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
-
         for ((i=0; i<${#fieldNames[@]}; i++))
         do
             fieldName="${fieldNames[i]}"
@@ -78,8 +76,25 @@ do
             while [[  $var == 0 ]]; do
             var=1
                 read -p "Enter value for $fieldName: " fieldValue
-
-                if [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
+                 if [[ "$fieldDataType" == "number" &&  -z "$fieldValue" ]]
+                 then
+                		 if [  "$fieldsPrimary" == "yes"  ]
+            		        then
+            		        echo "Do not enter null in pk ! "
+            		                       var=0
+				else
+				fieldValue=0
+				fi
+                 elif [[ "$fieldDataType" == "string" && -z "$fieldValue" ]]
+                 then
+                                 if [  "$fieldsPrimary" == "yes"  ]
+            		        then
+            		                    		        echo "Do not enter null in pkhllhh ! "
+            		        var=0
+				else
+				fieldValue=null
+				fi
+                elif [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
                 then
                     echo "Invalid input. '$fieldName' should be a string."
                     var=0
@@ -105,15 +120,12 @@ do
                     
                     fi
                     
-                    echo -n "$fieldValue:" >> "${tableName}.data"
-                    echo "Value '$fieldValue' added for column '$fieldName'."
+                    
                 fi
-                if [[ $var == 1 ]];
-            then
-            break
-            fi
+   
             done
-            
+                echo -n "$fieldValue:" >> "${tableName}.data"
+                    echo "Value '$fieldValue' added for column '$fieldName'."
         done
         echo >> "${tableName}.data"
     else
