@@ -56,66 +56,70 @@ do
                 ;;
 #____________________________________________________________________________________________________________________
 #menu for choosing insert  new row (data)
-		"Insert new row")
-    		echo "You selected: $answer"
-  		  read -p "Please enter table name to insert a new row: " tableName
-   		 if [ -f "${tableName}.metadata" ]
-   		 then
-    			   fieldNames=($(awk -F: 'NR==1 {for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
-     			   fieldDataTypes=($(awk -F: 'NR==2{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
-    		           fieldIsPrimary=($(awk -F: 'NR==3{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
-      			  for ((i=0; i<${#fieldNames[@]}; i++))
-     			   do
-    				        fieldName="${fieldNames[i]}"
-     				       fieldDataType="${fieldDataTypes[i]}"
-     				       fieldsPrimary="${fieldIsPrimary[i]}"
-      				      existingValues=($(cut -d: -f$((i+1)) "${tableName}.data"))
-           			      flag=0
-         			   while [[  $flag == 0 ]]
-         			   do
-            				flag=1
-         			       read -p "Enter value for $fieldName: " fieldValue
-           			     if [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
-          	     		    then
-                   				 echo "Invalid input. '$fieldName' should be a string."
-                  				  flag=0
-                			elif [[ "$fieldDataType" == "number" && ! "$fieldValue" =~ ^[0-9]+$ ]]
-               				  then
-               					 echo "Invalid input. '$fieldName' should be a number."
-                   				flag=0
-          				else
-              				      if [ "$fieldsPrimary" == "yes" ]
-        			              then
-        				                for val in "${existingValues[@]}"
-         				               do
-         					                   if [ "$val" == "$fieldValue" ]
-               						            then
-              						                  echo "Error: Value for primary key column '$fieldName' must be unique."
-            						                    flag=0
-                					              	break
-                   		             			else
-         					                  	flag=1
-                     
-                          						  fi
-                      				  done
-                  			   else 
-                  				  echo -n "$fieldValue:" >> "${tableName}.data"
-            				        echo "Value '$fieldValue' added for column '$fieldName'."
+
+		#menu for choosing insert  new column
+"Insert new row")
+    echo "You selected: $answer"
+    read -p "Please enter table name to insert a new row: " tableName
+    if [ -f "${tableName}.metadata" ]
+    then
+        fieldNames=($(awk -F: 'NR==1 {for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+        fieldDataTypes=($(awk -F: 'NR==2{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+        fieldIsPrimary=($(awk -F: 'NR==3{for (i=1; i<=NF; i++) print $i}' "${tableName}.metadata"))
+
+        for ((i=0; i<${#fieldNames[@]}; i++))
+        do
+            fieldName="${fieldNames[i]}"
+            fieldDataType="${fieldDataTypes[i]}"
+            fieldsPrimary="${fieldIsPrimary[i]}"
+            existingValues=($(cut -d: -f$((i+1)) "${tableName}.data"))
+            echo "${existingValues[@]}"
+            var=0
+            while [[  $var == 0 ]]; do
+            var=1
+                read -p "Enter value for $fieldName: " fieldValue
+
+                if [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
+                then
+                    echo "Invalid input. '$fieldName' should be a string."
+                    var=0
+                elif [[ "$fieldDataType" == "number" && ! "$fieldValue" =~ ^[0-9]+$ ]]
+                 then
+                    echo "Invalid input. '$fieldName' should be a number."
+                    var=0
+                else
+                    if [ "$fieldsPrimary" == "yes" ]
+                    then
+                        for val in "${existingValues[@]}"
+                        do
+                            if [ "$val" == "$fieldValue" ]
+                            then
+                                echo "Error: Value for primary key column '$fieldName' must be unique."
+                                var=0
+                              	break
+                                else
+                           	var=1
+                            fi
+                        done
+                    #else 
                     
-             			       fi
-        	        fi
-       				         if [[ $flag == 1 ]];
-      				         then
-         					   break
-      				        fi
-     			    	   done
+                    fi
+                    
+                    echo -n "$fieldValue:" >> "${tableName}.data"
+                    echo "Value '$fieldValue' added for column '$fieldName'."
+                fi
+                if [[ $var == 1 ]];
+            then
+            break
+            fi
+            done
             
-        		done
-   			    echo >> "${tableName}.data"
-   		 else
-   			     echo "Table '$tableName' does not exist."
-   		 fi
-   		 ;;
+        done
+        echo >> "${tableName}.data"
+    else
+        echo "Table '$tableName' does not exist."
+    fi
+    ;;
 #____________________________________________________________________________________________________________________
             "Exit")
                 echo "Exiting program!"
