@@ -152,7 +152,7 @@ do
                         ;;
                 esac
             done
-
+		
             while [ "$pkFlag" != "true" ]
             do
                 read -p "Is $fieldName a primary key? (yes/no): " isPrimary
@@ -161,7 +161,6 @@ do
                         if [[ $counter -eq 0 && ! $(grep -o -w "yes" <<< "$primaryKeys") ]]
                         then
                             primaryKeys+="$isPrimary:"
-                       	    echo ${primaryKeys[@]}
                             counter=$((counter + 1))
                             pkFlag=true
                         else
