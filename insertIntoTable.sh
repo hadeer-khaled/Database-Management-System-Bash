@@ -115,7 +115,7 @@ do
                  then
                                  if [  "$fieldsPrimary" == "yes"  ]
             		        then
-            		                    		        echo "Do not enter null in pkhllhh ! "
+            		                    		        echo "Do not enter null in pk ! "
             		        var=0
 				else
 				fieldValue=null
