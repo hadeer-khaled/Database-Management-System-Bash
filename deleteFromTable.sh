@@ -42,6 +42,7 @@ select action in "${deleteActions[@]}";
 		if [ ${PKsArray[$(($delColumnNumber-1))]} ==  "yes" ];
 		then
 			echo ">>This column is primary Key so you cannot delete it"
+			echo "------------------------------------------------------------------"
 		
 		else
 			delTempFile=$(mktemp)
@@ -50,6 +51,7 @@ select action in "${deleteActions[@]}";
 			rm -f "$delTempFile"
 			
 			echo "Data of $delColumnName column is deleted successfully. "
+			echo "------------------------------------------------------------------"
 		fi
 			;;
 			
@@ -80,6 +82,7 @@ select action in "${deleteActions[@]}";
 				
 				rm -f "$delTempFile"
 				echo "Row with $whereColumnName = $whereValue is deleted successfully. "
+				echo "------------------------------------------------------------------"
 			fi
 
 			;;	
@@ -91,6 +94,7 @@ select action in "${deleteActions[@]}";
 			then 
 				echo -n > "$dataFile"
 				echo "Entire Table Data is deleted successfully."
+				echo "------------------------------------------------------------------"
 			fi
 			;;
 				    

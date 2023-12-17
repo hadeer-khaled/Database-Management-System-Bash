@@ -39,7 +39,7 @@ select action in "${actions[@]}";
 			then 
 				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
-					echo ">>>>>>>>> Error: This Database already exists"
+					echo ">> Error: This Database already exists"
 					echo "---------------------------------------------"
 				else
 					mkdir "$currentPath/DB/$DB_Name"

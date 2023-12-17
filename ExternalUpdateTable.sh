@@ -18,7 +18,8 @@ select action in "${updateActions[@]}";
 		;;
 		
 		3 | [Ee][Xx][Ii][Tt] )
-		break
+		exit
+		
 		;;
 		* ) 
 		echo "Invalid Action"
@@ -49,7 +50,7 @@ read -p "Enter the Column Name you want to update it: " desiredColumnName
 desiredColumnNumber=$(echo "$header" | awk -F: -v desiredColumnName="$desiredColumnName" '{for(i=1; i<=NF; i++) if($i == desiredColumnName) print i}')
 
 
-while [ -z "$desiredColumnName" ]; 
+while [[ -z "$desiredColumnName" || -z $desiredColumnNumber ]]; 
 do	
 	echo ">> This column name dosn't exist. Try again"
 	read -p "Enter the Column Name you want to update it: " desiredColumnName  
@@ -123,7 +124,7 @@ then
 
 		    echo "Record with $whereColumnName=$whereValue updated successfully."
 		else
-		    echo "Record with $whereColumnName=$whereValue not found."
+		    echo ">> Record with $whereColumnName=$whereValue not found."
 		fi
 
 		# Clean up temporary file
@@ -148,7 +149,7 @@ else
 
 		    echo "Record with $whereColumnName=$whereValue updated successfully."
 		else
-		    echo "Record with $whereColumnName=$whereValue not found."
+		    echo ">> Record with $whereColumnName=$whereValue not found."
 		fi
 
 		# Clean up temporary file

@@ -3,6 +3,7 @@
 currecntDirectory=$(pwd) 
 while true
 do
+    echo "=============================================================="
     echo "=== HN Table Menu ==="
     echo "=============================================================="
     tableMenu=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Update Table" "Delete From Table" "Exit") 
