@@ -98,15 +98,15 @@ do
                                 var=0
                               	break
                                 else
-                           var=1
-                     
+                           	var=1
                             fi
                         done
-                        else 
-                    echo -n "$fieldValue:" >> "${tableName}.data"
-                    echo "Value '$fieldValue' added for column '$fieldName'."
+                    #else 
                     
                     fi
+                    
+                    echo -n "$fieldValue:" >> "${tableName}.data"
+                    echo "Value '$fieldValue' added for column '$fieldName'."
                 fi
                 if [[ $var == 1 ]];
             then
