@@ -123,52 +123,64 @@ else
     fieldNames=""
     dataTypes=""
     primaryKeys=""
-    for ((i=1; i<=fieldNumber; i++))
+for ((i=1; i<=fieldNumber; i++))
+do
+    counter=0
+    flag=false
+    pkFlag=false
+    while [ "$flag" != "true" ]
     do
-        flag=false
-        while [ "$flag" != true ]
-        do
-            read -p "Please enter field name for field $i: " fieldName
-            if [[ ! "$fieldName" =~ ^[a-zA-Z][a-zA-Z0-9_]  || ${#fieldName} -gt 64 ]]
-             then
-                echo "Sorry... invalid field name. Try another name starting with a letter, number, or underscore."
-            elif grep -q -w "$fieldName" "${tableName}.metadata"
-            then
-                echo "Sorry... field name '$fieldName' already exists. Try another name."
-            else
-                fieldNames+="$fieldName:"
-                while [ "$flag" != true ]
-                do
-                    read -p "Please enter field data type for $fieldName you have to write ( 'string' or 'number') : " fieldDataType
-                    case "$fieldDataType" in
-                        "string" | "number")
-                            dataTypes+="$fieldDataType:"
-                            flag=true
-                            ;;
-                        *)
-                            echo "Invalid data type. Please enter ('string' or 'number')."
-                            ;;
-                    esac
-                done
+        read -p "Please enter field name for field $i: " fieldName
+        if [[ ! "$fieldName" =~ ^[a-zA-Z][a-zA-Z0-9_]  || ${#fieldName} -gt 64 ]]
+         then
+            echo "Sorry... invalid field name. Try another name starting with a letter, number, or underscore."
+        elif grep -q -w "$fieldName" "${tableName}.metadata"
+        then
+            echo "Sorry... field name '$fieldName' already exists. Try another name."
+        else
+            fieldNames+="$fieldName:"
+            while [ "$flag" != "true" ]
+            do
+                read -p "Please enter field data type for $fieldName you have to write ( 'string' or 'number') : " fieldDataType
+                case "$fieldDataType" in
+                    "string" | "number")
+                        dataTypes+="$fieldDataType:"
+                        flag=true
+                        ;;
+                    *)
+                        echo "Invalid data type. Please enter ('string' or 'number')."
+                        ;;
+                esac
+            done
 
-                flag=false
-                while [ "$flag" != true ]
-                do
-                    read -p "Is $fieldName a primary key? (yes/no): " isPrimary
-                    case "$isPrimary" in
-                        "yes" | "no")
+            while [ "$pkFlag" != "true" ]
+            do
+                read -p "Is $fieldName a primary key? (yes/no): " isPrimary
+                case "$isPrimary" in
+                    "yes" )
+                        if [[ $counter -eq 0 && ! $(grep -o -w "yes" <<< "$primaryKeys") ]]
+                        then
                             primaryKeys+="$isPrimary:"
-                            flag=true
-                            ;;
-                        *)
-                            echo "Invalid input. Please enter 'yes' or 'no'."
-                            ;;
-                    esac
-                done
-            fi
-        done
+                       	    echo ${primaryKeys[@]}
+                            counter=$((counter + 1))
+                            pkFlag=true
+                        else
+                            echo "Sorry... can't add more than one unique PK in the same table"
+                            pkFlag=false
+                        fi
+                        ;;
+                    "no")
+                        primaryKeys+="$isPrimary:"
+                        pkFlag=true
+                        ;;
+                    *)
+                        echo "Invalid input. Please enter 'yes' or 'no'."
+                        ;;
+                esac
+            done
+       fi
     done
-
+done
     echo -n "$fieldNames" >> "${tableName}.metadata"
     echo >> "${tableName}.metadata"
     echo -n "$dataTypes" >> "${tableName}.metadata"
