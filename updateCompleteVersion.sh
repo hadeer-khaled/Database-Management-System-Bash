@@ -1,14 +1,4 @@
 #!/bin/bash
-checkSpace(){
-local name="$1" 
-	if [[ $name =~ [[:space:]] ]]
-	then 
-		echo ">>>>>>>>> Warning: Database name cannot contain spaces, the spaces will be replaced with uderscore(_)"
-		echo ">>>>>>>>> The database name will be \"${name// /_}\" instead of \"$name\" "
-		name=${name// /_}
-	fi
-	echo $name
-}
 # -------------------------------------- Check if the table exists -------------------------------------#
 read -p "Enter the Table Name you want to update it: " tableName
 dataFile=$tableName.data

@@ -31,7 +31,7 @@ select action in "${actions[@]}";
 		    1 | [Cc][Rr][Ee][Aa][Tt][Ee][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 
 			read -p "Enter database name: " DB_Name
-			
+
 			
 			source databaseNameChecker.sh
 
@@ -40,9 +40,11 @@ select action in "${actions[@]}";
 				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
 					echo ">>>>>>>>> Error: This Database already exists"
+					echo "---------------------------------------------"
 				else
 					mkdir "$currentPath/DB/$DB_Name"
 					echo "$DB_Name database is created"   
+					echo "---------------------------------------------"
 				fi
 			fi
 			
@@ -52,6 +54,7 @@ select action in "${actions[@]}";
 		    2 | [Ll][Ii][Ss][Tt][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 			echo "The available databases are: "
 			ls  "$currentPath/DB" 
+			echo "---------------------------------------------"
 			;;
 			
 			################################# Connect to a databases ################################	
@@ -68,6 +71,7 @@ select action in "${actions[@]}";
 		  			 source tableMenue.sh
 				else
 					echo "This Database doesn't exist"  
+					echo "---------------------------------------------"
 				fi
 			fi	
 			;;
@@ -75,6 +79,7 @@ select action in "${actions[@]}";
 			################################# Drop a databases ################################	
 		    4 | [Dd][Rr][Oo][Pp][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 			read -p "Enter database name: " DB_Name
+			
 			source databaseNameChecker.sh
 		        if (( flag == 1 ))
 		        then
@@ -83,8 +88,10 @@ select action in "${actions[@]}";
 					
 					rm -r "$currentPath/DB/$DB_Name" 
 					echo "$DB_Name is deleted successfully."
+					echo "---------------------------------------------"
 				else
 					echo "This Database doesn't exist"  
+					echo "---------------------------------------------"
 				fi
 		        fi 
 			;;

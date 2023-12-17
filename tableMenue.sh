@@ -31,7 +31,8 @@ do
             		 ;;
             "Update Table") 
             		echo "You selected: $answer"
-            		updateTable.sh
+            		#updateTable.sh
+            		ExternalUpdateTable.sh
             		;;
             "Delete From Table") 
             		echo "You selected: $answer"

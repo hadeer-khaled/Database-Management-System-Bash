@@ -22,11 +22,19 @@
 	
 	check if name pk  ----> if value already exist --> error name already exists and cannot be repeated (DN)
 	
+	choose:
+		1) Update Column
+			if column -- > pk ---> error (DN)
+				  -- > not pk -- >update (DN)
+		2) Update Row
+		 
+	
 	
 		
 	
 	
 5) delete from table (DN)
+
 
 
 6) Merge update file to DBMS.
