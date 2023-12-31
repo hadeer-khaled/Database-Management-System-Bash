@@ -2,7 +2,15 @@
 shopt -s extglob
 export LC_COLLATE=C
 
-currentPath=`pwd`
+rightSign='\xE2\x9C\x94'
+crossSign='\xE2\x9D\x8C'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
+currentPath=`pwd` # to know the path where the will user run the program.
 
 # check if DB dir exit or not.
 if [ ! -d "$currentPath/DB" ];
@@ -11,26 +19,28 @@ then
 fi
 
 cd $currentPath/DB
-#echo "Your path now is: `pwd`"
 
-#-----------------------------------------
-#echo "the file path $0"
-#script_directory=$(dirname $0)
-#echo $script_directory
-#---------------------------
+echo  -e " " 
+
 #----------------------------------- create selcet menu ------------------------------------
-PS3="choose an action to do: "
+PS3="====> choose an action to do: "
 
 actions=("Create Database" "List Databases" "Connect to Database" "Drop Database" "Exit")
-select action in "${actions[@]}";
+
+
+select action in "${actions[@]}"; # @ to get all elements.
 	do    
-	export flag=1
-	export DB_Name=" "
+	# export flag=1
+	# export DB_Name=" "
+	
+	flag=1
+	DB_Name=" "
 		case $REPLY in
 			################################# Create the databse ################################
 		    1 | [Cc][Rr][Ee][Aa][Tt][Ee][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 
-			read -p "Enter database name: " DB_Name
+			read -p "=> Enter database name: " DB_Name
+			echo  -e " "
 
 			
 			source databaseNameChecker.sh
@@ -39,12 +49,13 @@ select action in "${actions[@]}";
 			then 
 				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
-					echo ">> Error: This Database already exists"
-					echo "---------------------------------------------"
+					echo  -e " ${crossSign} ${RED} Error: This Database already exists ${crossSign} ${NC} "
+					echo  -e "---------------------------------------------"
 				else
 					mkdir "$currentPath/DB/$DB_Name"
-					echo "$DB_Name database is created"   
-					echo "---------------------------------------------"
+					echo  -e  "${GREEN} ${rightSign} ${rightSign}  $DB_Name database is created ${rightSign}  ${rightSign} ${NC}"   
+					echo  -e "---------------------------------------------"
+					echo  -e " "
 				fi
 			fi
 			
@@ -52,26 +63,27 @@ select action in "${actions[@]}";
 			
 			################################# List available databases ################################	
 		    2 | [Ll][Ii][Ss][Tt][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
-			echo "The available databases are: "
+			echo  -e "=> The available databases are: "
 			ls  "$currentPath/DB" 
-			echo "---------------------------------------------"
+			echo  -e " "
 			;;
 			
 			################################# Connect to a databases ################################	
 		    3 | [Cc][Oo][Nn][Nn][Ee][Cc][Tt][[:space:]][Tt][Oo][[:space:]][Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee] )
 		    
-		        read -p "Enter database name: " DB_Name
+		        read -p "=> Enter database name: " DB_Name
 		        source databaseNameChecker.sh
 		        if (( flag == 1 ))
 		        then
 				if [ -d "$currentPath/DB/$DB_Name" ]
 				then
 					 cd "./$DB_Name"
-					 echo "Your path now is: `pwd` " 
+					 echo  -e " ${WHITE} Your path now is: `pwd`  ${NC} " 
 		  			 source tableMenue.sh
 				else
-					echo "This Database doesn't exist"  
-					echo "---------------------------------------------"
+					echo  -e " ${crossSign} ${RED} Error: This Database doesn't exist ${crossSign} ${NC} "  
+					echo  -e "---------------------------------------------"
+					echo  -e ""
 				fi
 			fi	
 			;;
@@ -87,11 +99,13 @@ select action in "${actions[@]}";
 				then
 					
 					rm -r "$currentPath/DB/$DB_Name" 
-					echo "$DB_Name is deleted successfully."
-					echo "---------------------------------------------"
+					echo  -e "${rightSign} ${GREEN}  $DB_Name database is deleted successfully.${rightSign} ${NC}  "
+					echo  -e "---------------------------------------------"
+					echo  -e " "
 				else
-					echo "This Database doesn't exist"  
-					echo "---------------------------------------------"
+					echo  -e "${crossSign} ${RED} Error: This Database doesn't exist ${crossSign} ${NC} "  
+					echo  -e "---------------------------------------------"
+					echo  -e " "
 				fi
 		        fi 
 			;;
@@ -100,7 +114,9 @@ select action in "${actions[@]}";
 			break
 			;;
 		    * ) 
-			echo "Invalid Action"
+			echo  -e  " ${crossSign} ${RED} Invalid Action ${crossSign} ${NC} "
+			echo  -e "---------------------------------------------"
+			echo  -e " "
 			;;
 		esac				
 	done 	
