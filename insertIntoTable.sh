@@ -1,11 +1,17 @@
 #!/usr/bin/bash
-
+rightSign='\xE2\x9C\x94'
+crossSign='\xE2\x9D\x8C'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
 #____________________________________________________________________________________________________________________
 while true
 do
+	echo -e "${YELLOW}=== H&N Insert Menu ===${NC}"
+	echo -e "${YELLOW}==============================================================${NC}"
 	insertMenu=("Insert new Field" "Insert new row" "Exit")
-	echo "=== H&N Insert Menu ==="
-	echo "=============================================================="
 	select answer in "${insertMenu[@]}"
     do
         case $answer in
@@ -13,7 +19,7 @@ do
 #menu for choosing insert new column
 "Insert new Field")
     pkFlag=false
-    echo "You selected: $answer"
+    echo -e "${GREEN}You selected: $answer${NC}"
     read -p "Please enter table name: " tableName
 
     if [ -f "${tableName}.metadata" ]
@@ -22,7 +28,7 @@ do
 
         while [[ ! "$fieldName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#fieldName} -gt 64 ]]
          do
-            echo "Sorry... invalid field name. Try another name starting with a letter, number, or underscore."
+            echo -e "${RED}Sorry... invalid field name. Try another name starting with a letter, or underscore.and BE CAREFUL to be less than 64 character ${NC}"
             read -p "Please enter field name for the new field: " fieldName
         done
 
@@ -30,7 +36,7 @@ do
 
         while [[ "$dataType" != "string" && "$dataType" != "number" ]]
          do
-            echo "Invalid data type. Enter 'string' or 'number'."
+            echo -e "${RED}Invalid data type. Enter 'string' or 'number'. ${NC}"
             read -p "Please enter data type (string or number): " dataType
         done
 	
@@ -41,13 +47,13 @@ do
             read -p "Is $fieldName a primary key? (yes/no): " isPrimary
             if [[ "$isPrimary" == "yes" ]]
             then
-                if [[ $counter -eq 0 && ! $(grep -o -w "yes" <<< "$primaryKeys") && ! $(grep -o -w "$isPrimary" <<< "$existingPKs") ]]
+                if [[ $counter -eq 0 && ! $(grep -o -w "yes" <<< "$primaryKeys") ]]
                 then
                     primaryKeys+="$isPrimary:"
                     counter=$((counter + 1))
                     pkFlag=true
                 else
-                    echo "Sorry... can't add more than one unique PK in the same table or duplicate primary key value"
+                    echo -e  "${RED}Sorry... can't add more than one unique PK in the same table or duplicate primary key value${NC}"
                     pkFlag=false
                 fi
             elif [[ "$isPrimary" == "no" ]]
@@ -55,7 +61,7 @@ do
                 primaryKeys+="$isPrimary:"
                 pkFlag=true
             else 
-                echo "Invalid input. Please enter 'yes' or 'no' for primary key."
+                echo -e "${RED}Invalid input. Please enter 'yes' or 'no' for primary key.${NC}"
 
             fi
         done
@@ -73,9 +79,9 @@ do
         }' "$oldMetadata" >"$newMetaData"
 
         mv "$newMetaData" "$oldMetadata"
-        echo "Field '$fieldName' added to table '$tableName'."
+        echo  -e "${GREEN}Field '$fieldName' added to table '$tableName'.${NC}"
     else
-        echo "Table '$tableName' does not exist"
+        echo -e "${RED}Table '$tableName' does not exist ${NC}"
     fi
     ;;
 
@@ -84,7 +90,7 @@ do
 #menu for choosing insert  new row (data)
 
 "Insert new row")
-    echo "You selected: $answer"
+    echo -e "${GREEN}You selected: $answer${NC}"
     read -p "Please enter table name to insert a new row: " tableName
     if [ -f "${tableName}.metadata" ]
     then
@@ -106,7 +112,7 @@ do
                  then
                 		 if [  "$fieldsPrimary" == "yes"  ]
             		        then
-            		        echo "Do not enter null in pk ! "
+            		        echo -e "${RED}Do not enter null in pk !${NC} "
             		                       var=0
 				else
 				fieldValue=0
@@ -115,18 +121,18 @@ do
                  then
                                  if [  "$fieldsPrimary" == "yes"  ]
             		        then
-            		                    		        echo "Do not enter null in pk ! "
+            		                    		        echo -e "${RED}Do not enter null in pk !${NC} "
             		        var=0
 				else
 				fieldValue=null
 				fi
                 elif [[ "$fieldDataType" == "string" && ! "$fieldValue" =~ ^[A-Za-z]+$ ]]
                 then
-                    echo "Invalid input. '$fieldName' should be a string."
+                    echo -e "${RED}Invalid input. '$fieldName' should be a string.${NC}"
                     var=0
                 elif [[ "$fieldDataType" == "number" && ! "$fieldValue" =~ ^[0-9]+$ ]]
                  then
-                    echo "Invalid input. '$fieldName' should be a number."
+                    echo -e "${RED}Invalid input. '$fieldName' should be a number.${NC}"
                     var=0
                 else
                     if [ "$fieldsPrimary" == "yes" ]
@@ -135,7 +141,7 @@ do
                         do
                             if [ "$val" == "$fieldValue" ]
                             then
-                                echo "Error: Value for primary key column '$fieldName' must be unique."
+                                echo -e "${RED}Error: Value for primary key column '$fieldName' must be unique.${NC}"
                                 var=0
                               	break
                                 else
@@ -151,19 +157,19 @@ do
    
             done
                 echo -n "$fieldValue:" >> "${tableName}.data"
-                    echo "Value '$fieldValue' added for column '$fieldName'."
+                    echo -e  "${GREEN}Value '$fieldValue' added for column '$fieldName'.${NC}"
         done
         echo >> "${tableName}.data"
     else
-        echo "Table '$tableName' does not exist."
+        echo  -e "${RED}Table '$tableName' does not exist.${NC}"
     fi
     ;;
 #____________________________________________________________________________________________________________________
             "Exit")
-                echo "Exiting program!"
+                echo -e "${GREEN}Exiting program!${NC}"
                 exit;;
             *)
-                echo "Invalid choice. Please enter a valid option."
+                echo -e  "${RED}Invalid choice. Please enter a valid option.${NC}"
                 ;;
         esac
         break

@@ -1,53 +1,59 @@
 #!/usr/bin/bash
-
-metadataTables=$(ls *.metadata)
-dataTables=$(ls *.data)
+rightSign='\xE2\x9C\x94'
+crossSign='\xE2\x9D\x8C'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+metadataTables=$(ls *.metadata 2>/dev/null)
+dataTables=$(ls *.data 2>/dev/null)
 currentPath=`pwd`
 #__________________________________________________________________________________________________________________
 #listing tables using ls
 while true
 do
-    echo "=== HN List Menu ==="
-    echo "=============================================================="
+    echo -e "${YELLOW}=== HN List Menu ===${NC}"
+    echo -e "${YELLOW}==============================================================${NC}"
     listMenu=("List all tables" "List metadata tables" "List data table" "Exit") 
     select answer in "${listMenu[@]}"
     do
         case $answer in
             "List all tables")
-                echo "You selected: $answer"
+                echo -e "${GREEN}You selected: $answer${NC}"
                 if [[ ! "$dataTables" && ! "$metadataTables" ]]
                 then
-                    echo "There are no tables. Try to create tables to list them."
+                    echo -e "${RED}There are no tables. Try to create tables to list them.${NC}"
                 else
-                    echo "Tables in this database are:"
+                    echo -e "${GREEN}Tables in this database are:${NC}"
                     echo -e "$dataTables""\n""$metadataTables"
                 fi
                 ;;
             "List metadata tables")
-                echo "You selected: $answer"
+                echo -e "${GREEN}You selected: $answer${NC}"
                 if [ ! "$metadataTables" ]
                 then
-                    echo "There is no metadata tables so no tables created yet"
+                    echo -e "${YELLOW}There is no metadata tables so no tables created yet${NC}"
                 else
-                    echo "Metadata tables in this database are:"
+                    echo -e "${GREEN}Metadata tables in this database are:${NC}"
                     echo "$metadataTables"
                 fi
                 ;;
             "List data table")
-                echo "You selected: $answer"
+                echo -e "${GREEN}You selected: $answer${NC}"
                 if [ ! "$dataTables" ]
                 then
-                    echo "There is no data tables so no tables of the above filled yet"
+                    echo -e "${YELLOW}There is no data tables so no tables of the above filled yet${NC}"
                 else
-                    echo "Data tables in this database are:"
+                    echo -e "${GREEN}Data tables in this database are:${NC}"
                     echo "$dataTables"
                 fi
                 ;;
             "Exit")
-                echo "Exiting program!"
+                echo -e "${GREEN}Exiting program! ${NC}"
                 exit;;
             *) 
-            echo "Invalid choice. Please enter a valid option.";;
+            echo -e "${RED} Invalid choice. Please enter a valid option. ${NC}";;
         esac
         break
     done

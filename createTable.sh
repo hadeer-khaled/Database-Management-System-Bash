@@ -1,8 +1,16 @@
 #!/usr/bin/bash
-
-echo "========================================================="
-echo  -e "Hello And Welcome To H&N Database Administration System.\nLet's Start To Create Table"
-echo "========================================================="
+rightSign='\xE2\x9C\x94'
+crossSign='\xE2\x9D\x8C'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+yellow=$(tput setaf 3)  # Yellow text
+nc=$(tput sgr0)         # No color
+echo -e "${YELLOW}=========================================================${NC}"
+echo  -e "${YELLOW}Hello And Welcome To H&N Database Administration System.\nLet's Start To Create Table${NC}"
+echo -e "${YELLOW}=========================================================${NC}"
 
 
 #___________________________________________________________________________________________________________________________
@@ -14,10 +22,10 @@ do
     read -p "Please enter a table name to create: " tableName
     if [ -e "${tableName}.metadata" ]
     then
-        echo "Sorry... table with name '$tableName' already exists. Try another name."
-    elif [[ ! "$tableName" =~ ^[a-zA-Z][a-zA-Z0-9_] ]]
+        echo -e " ${crossSign}${RED} Sorry... table with name '$tableName' already exists. Try another name ${NC}"
+    elif [[ ! "$tableName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#tableName} -gt 64 ]]
      then
-        echo "Sorry... invalid name. Try another name starting with a letter, number, or underscore and BE CAREFUL to be less than 64 character "
+        echo -e "${crossSign} ${RED}  Sorry... invalid name. Try another name starting with a letter, or underscore and BE CAREFUL to be less than 64 character ${NC}"
     else
         flag=true
     fi
@@ -29,19 +37,16 @@ then
     tableNameReplacedSpace=$(echo "$tableName" | sed 's/ /_/g')
     touch "${tableNameReplacedSpace}.metadata"
     touch "${tableNameReplacedSpace}.data"
-    echo "Table with name '$tableNameReplacedSpace' created successfully"
-
-    # Validate and get a valid fieldNumber
+    echo -e " ${rightSign} ${GREEN} Table with name '$tableNameReplacedSpace' created successfully ${NC} "
     validFieldNumber=false
     while [ "$validFieldNumber" != true ]
     do
         read -p "Please enter the number of fields you want to enter: " fieldNumber
-        # Check if fieldNumber is a valid number
         if [[ "$fieldNumber" =~ ^[0-9]+$ ]]
         then
             validFieldNumber=true
         else
-            echo "Invalid input. Please enter a valid number for the field number."
+            echo -e " ${RED} Invalid input. Please enter a valid number for the field number ${NC} "
         fi
     done
 
@@ -56,10 +61,10 @@ then
             read -p "Please enter field name for field $i: " fieldName
             if [[ ! "$fieldName" =~ ^[a-zA-Z][a-zA-Z0-9_] || ${#fieldName} -gt 64 ]]
             then
-                echo "Sorry... invalid field name. Try another name starting with a letter, number, or underscore."
+                echo -e " ${RED} Sorry... invalid field name. Try another name starting with a letter, or underscore.and BE CAREFUL to be less than 64 character ${NC} "
             elif grep -q -w "$fieldName" "${tableNameReplacedSpace}.metadata"
             then
-                echo "Sorry... field name '$fieldName' already exists. Try another name."
+                echo -e " ${RED} Sorry... field name '$fieldName' already exists. Try another name ${NC}"
             else
                 fieldNames+="$fieldName:"
                 while [ "$flag" != true ]
@@ -71,7 +76,7 @@ then
                             flag=true
                             ;;
                         *)
-                            echo "Invalid data type. Please enter ( 'string' or 'number')."
+                            echo -e " ${RED} Invalid data type. Please enter ( 'string' or 'number') ${NC}"
                             ;;
                     esac
                 done
@@ -86,7 +91,7 @@ then
                             flag=true
                             ;;
                         *)
-                            echo "Invalid input. Please enter 'yes' or 'no'."
+                            echo -e " ${RED} Invalid input. Please enter 'yes' or 'no' ${NC} "
                             ;;
                     esac
                 done
@@ -107,7 +112,7 @@ then
 else
     touch "${tableName}.metadata"
     touch "${tableName}.data"
-    echo "Table with name '$tableName' created successfully"
+    echo -e "${rightSign} ${GREEN} Table with name '$tableName' created successfully${NC}"
     validFieldNumber=false
     while [ "$validFieldNumber" != true ]
     do
@@ -117,7 +122,7 @@ else
         then
             validFieldNumber=true
         else
-            echo "Invalid input. Please enter a valid number for the field number."
+            echo -e "${RED}Invalid input. Please enter a valid number for the field number.${NC}"
         fi
     done
     fieldNames=""
@@ -133,10 +138,10 @@ do
         read -p "Please enter field name for field $i: " fieldName
         if [[ ! "$fieldName" =~ ^[a-zA-Z][a-zA-Z0-9_]  || ${#fieldName} -gt 64 ]]
          then
-            echo "Sorry... invalid field name. Try another name starting with a letter, number, or underscore."
+            echo -e "${RED}Sorry... invalid field name. Try another name starting with a letter, or underscore.and BE CAREFUL to be less than 64 character ${NC}"
         elif grep -q -w "$fieldName" "${tableName}.metadata"
         then
-            echo "Sorry... field name '$fieldName' already exists. Try another name."
+            echo -e "${RED}Sorry... field name '$fieldName' already exists. Try another name.${NC}"
         else
             fieldNames+="$fieldName:"
             while [ "$flag" != "true" ]
@@ -148,7 +153,7 @@ do
                         flag=true
                         ;;
                     *)
-                        echo "Invalid data type. Please enter ('string' or 'number')."
+                        echo -e "${RED}Invalid data type. Please enter ('string' or 'number').${NC}"
                         ;;
                 esac
             done
@@ -164,7 +169,7 @@ do
                             counter=$((counter + 1))
                             pkFlag=true
                         else
-                            echo "Sorry... can't add more than one unique PK in the same table"
+                            echo -e "${RED}Sorry... can't add more than one unique PK in the same table ${NC}"
                             pkFlag=false
                         fi
                         ;;
@@ -173,7 +178,7 @@ do
                         pkFlag=true
                         ;;
                     *)
-                        echo "Invalid input. Please enter 'yes' or 'no'."
+                        echo -e "${RED}Invalid input. Please enter 'yes' or 'no'. ${NC}"
                         ;;
                 esac
             done
